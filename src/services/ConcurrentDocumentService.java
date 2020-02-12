@@ -1,7 +1,8 @@
 package services;
 
 import command.CommandBase;
-import command.CommandType;
+import command.DeleteCommand;
+import command.InsertCommand;
 import document.ConcurrentDocument;
 import document.MemoryDocument;
 import interfaces.DocumentService;
@@ -98,10 +99,10 @@ public class ConcurrentDocumentService implements DocumentService {
             CommandDto commandDto = Mapper.Map(entity);
             switch (entity.getType()){
                 case INSERT:
-                    commandDto.inserted = entity.getInserted();
+                    commandDto.inserted = ((InsertCommand) entity).inserted;
                     break;
                 case DELETE:
-                    commandDto.count = entity.getCount();
+                    commandDto.count = ((DeleteCommand) entity).count;
                     break;
             }
             commandDtoList.add(commandDto);

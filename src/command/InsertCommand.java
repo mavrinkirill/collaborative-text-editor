@@ -26,19 +26,4 @@ public class InsertCommand extends CommandBase {
         buffer.insert(position, inserted);
         return buffer.toString();
     }
-
-    @Override
-    public int getOffset() {
-        return inserted.length();
-    }
-
-    @Override
-    public String getInserted() throws CommandNotImplementedException {
-        return inserted;
-    }
-
-    @Override
-    public int getCount() throws CommandNotImplementedException {
-        throw new CommandNotImplementedException();
-    }
 }

@@ -23,12 +23,6 @@ public abstract class CommandBase {
 
     public abstract String apply(String value) throws Exception;
 
-    public abstract int getOffset();
-
-    public abstract String getInserted() throws CommandNotImplementedException;
-
-    public abstract int getCount() throws CommandNotImplementedException;
-
     protected void ensureValue(String value) throws Exception {
         if(value == null){
             throw new CommandNullValueException();

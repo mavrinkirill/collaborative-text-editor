@@ -1,14 +1,11 @@
 import interfaces.DocumentService;
 import interfaces.TransformationService;
-import models.dto.CommandDto;
 import models.dto.DocumentDto;
 import models.dto.DtoHelper;
 import services.CommandTransformationService;
 import services.ConcurrentDocumentService;
 import transformation.command.CommandTransformation;
 import transformation.command.InclusionTransformation;
-
-import java.util.ArrayList;
 
 public class Program {
     public static void main(String[] args) throws Exception {
@@ -18,12 +15,13 @@ public class Program {
         DocumentService documentService = new ConcurrentDocumentService(transformationService);
         DocumentDto document = documentService.create();
 
-        documentService.applyCommand(1, DtoHelper.insertCommandDto(0 ,0,"1234", 1));
-        documentService.applyCommand(1, DtoHelper.deleteCommandDto(1 ,0,3, 1));
+        documentService.applyCommand(1, DtoHelper.insertCommandDto(0 ,0,"12345678", 1));
+        documentService.applyCommand(1, DtoHelper.deleteCommandDto(1 ,0,2, 1));
+        documentService.applyCommand(1, DtoHelper.deleteCommandDto(1 ,4,2, 1));
 
         System.out.println(documentService.get(1).content);
 
-        ArrayList<CommandDto> history = documentService.getHistory(1, 0);
+        //ArrayList<CommandDto> history = documentService.getHistory(1, 0);
 
         /*
         document.command(new InsertCommand(0, 0, "12345", 2));

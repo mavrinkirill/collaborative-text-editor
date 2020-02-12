@@ -1,13 +1,14 @@
 package transformation.command;
 
-import command.CommandBase;
+import command.DeleteCommand;
+import command.InsertCommand;
 
 public interface CommandTransformation {
-    CommandBase insertAfterInsertTransformation(CommandBase previous, CommandBase current);
+    InsertCommand transformation(InsertCommand previous, InsertCommand current);
 
-    CommandBase insertAfterDeleteTransformation(CommandBase previous, CommandBase current);
+    InsertCommand transformation(DeleteCommand previous, InsertCommand current);
 
-    CommandBase deleteAfterInsertTransformation(CommandBase previous, CommandBase current);
+    DeleteCommand transformation(InsertCommand previous, DeleteCommand current);
 
-    CommandBase deleteAfterDeleteTransformation(CommandBase previous, CommandBase current);
+    DeleteCommand transformation(DeleteCommand previous, DeleteCommand current);
 }

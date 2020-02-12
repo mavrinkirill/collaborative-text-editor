@@ -20,19 +20,4 @@ public class DeleteCommand extends CommandBase {
 
         return value.substring(0, position) + value.substring(position + count);
     }
-
-    @Override
-    public int getOffset() {
-        return count;
-    }
-
-    @Override
-    public String getInserted() throws CommandNotImplementedException {
-        throw new CommandNotImplementedException();
-    }
-
-    @Override
-    public int getCount() throws CommandNotImplementedException {
-        return count;
-    }
 }
