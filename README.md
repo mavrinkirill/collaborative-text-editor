@@ -1,4 +1,4 @@
-# collaborative-text-editor
+# Collaborative text editor
 
 Test
 
