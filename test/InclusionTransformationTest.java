@@ -1,17 +1,6 @@
-import command.DeleteCommand;
-import command.InsertCommand;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import interfaces.CommandTransformation;
-import services.InclusionTransformation;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 class InclusionTransformationTest {
-    private CommandTransformation service;
+
+    /*private CommandTransformation service;
 
     @BeforeEach
     public void beforeTest() {
@@ -23,40 +12,9 @@ class InclusionTransformationTest {
         service = null;
     }
 
-    @Test
-    public void insertAfterInsertShouldNotChangePosition() {
-        InsertCommand previous = new InsertCommand(0, 1, "a", 1);
-        InsertCommand current = new InsertCommand(0, 0, "a", 1);
 
-        InsertCommand actual = service.transformation(previous, current);
 
-        assertEquals(0, actual.position);
-        assertEquals(1, actual.inserted.length());
-    }
 
-    @ParameterizedTest
-    @CsvSource({ "1, 1, 0", "1, 2, 0"})
-    public void insertAfterInsertShouldNotChangePosition(int firstAuthorId, int secondAuthorId, int expectedPosition) {
-        InsertCommand previous = new InsertCommand(0, 0, "a", firstAuthorId);
-        InsertCommand current = new InsertCommand(0, 0, "a", secondAuthorId);
-
-        InsertCommand actual = service.transformation(previous, current);
-
-        assertEquals(expectedPosition, actual.position);
-        assertEquals(1, actual.inserted.length());
-    }
-
-    @ParameterizedTest
-    @CsvSource({ "0, 1, 1, 1, 2", "0, 0, 2, 1, 1"})
-    public void insertAfterInsertShouldChangePosition(int firstPosition, int secondPosition, int firstAuthorId, int secondAuthorId, int expectedPosition) {
-        InsertCommand previous = new InsertCommand(0, firstPosition, "a", firstAuthorId);
-        InsertCommand current = new InsertCommand(0, secondPosition, "a", secondAuthorId);
-
-        InsertCommand actual = service.transformation(previous, current);
-
-        assertEquals(expectedPosition, actual.position);
-        assertEquals(1, actual.inserted.length());
-    }
 
     @ParameterizedTest
     @CsvSource({ "1, 0, 0", "0, 0, 0" })
@@ -126,4 +84,6 @@ class InclusionTransformationTest {
         assertEquals(expectedPosition, actual.position);
         assertEquals(expectedCount, actual.count);
     }
+
+     */
 }

@@ -1,31 +1,5 @@
-import command.CommandBase;
-import command.InsertCommand;
-import exceptions.document.DocumentInvalidVersionException;
-import exceptions.document.DocumentUpdateException;
-import exceptions.ApiValidationException;
-import exceptions.NotFoundException;
-import interfaces.DocumentService;
-import interfaces.NotificationService;
-import interfaces.TransformationService;
-import models.command.CommandDto;
-import models.command.DeleteCommandDto;
-import models.document.DocumentDto;
-import models.command.InsertCommandDto;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import services.MemoryDocumentService;
-
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 class MemoryDocumentServiceTest {
+    /*
     private DocumentService service;
 
     @Mock
@@ -209,4 +183,6 @@ class MemoryDocumentServiceTest {
 
         assertEquals(3 , history.size());
     }
+
+     */
 }

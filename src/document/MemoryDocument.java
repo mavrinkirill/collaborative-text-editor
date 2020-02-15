@@ -4,7 +4,8 @@ import command.CommandBase;
 import exceptions.document.DocumentInvalidVersionException;
 import exceptions.document.DocumentUpdateException;
 import interfaces.NotificationService;
-import interfaces.TransformationService;
+import interfaces.TransformationFactory;
+import transformations.CommandTransformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 public class MemoryDocument implements Document {
-    private TransformationService transformationService;
+    private TransformationFactory transformationFactory;
     private NotificationService notificationService;
 
     private ReadWriteLock lock = new ReentrantReadWriteLock();
@@ -24,8 +25,8 @@ public class MemoryDocument implements Document {
 
     private String content = "";
 
-    public MemoryDocument(TransformationService transformationService, NotificationService notificationService){
-        this.transformationService = transformationService;
+    public MemoryDocument(TransformationFactory transformationFactory, NotificationService notificationService){
+        this.transformationFactory = transformationFactory;
         this.notificationService = notificationService;
     }
 
@@ -51,7 +52,7 @@ public class MemoryDocument implements Document {
             }
 
             if(command.version < version){
-                command = transform(command);
+                command = transformation(command);
             }
 
             try {
@@ -92,10 +93,16 @@ public class MemoryDocument implements Document {
         }
     }
 
-    private CommandBase transform(CommandBase command) throws Exception {
+    private CommandBase transformation(CommandBase command) throws Exception {
         for (long i = command.version; i < version; i++){
-            CommandBase prev = commandStorage.get(i);
-            command = transformationService.transform(prev, command);
+            CommandBase previousCommand = commandStorage.get(i);
+            try{
+                CommandTransformation commandTransformation = transformationFactory.getTransformation(previousCommand, command);
+                command = commandTransformation.transformation(previousCommand, command);
+            }
+            catch (Exception e){
+                throw new DocumentUpdateException(e);
+            }
         }
         command.version = version;
 

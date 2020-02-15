@@ -10,7 +10,7 @@ import exceptions.NotFoundException;
 import exceptions.document.DocumentUpdateException;
 import interfaces.DocumentService;
 import interfaces.NotificationService;
-import interfaces.TransformationService;
+import interfaces.TransformationFactory;
 import mapper.Mapper;
 import models.command.CommandDto;
 import models.command.DeleteCommandDto;
@@ -21,20 +21,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MemoryDocumentService implements DocumentService {
-    private TransformationService transformationService;
+    private TransformationFactory transformationFactory;
     private NotificationService notificationService;
 
     private int id = 1;
     private HashMap<Integer, Document> documentStorage = new HashMap<>();
 
-    public MemoryDocumentService(TransformationService transformationService, NotificationService notificationService){
-        this.transformationService = transformationService;
+    public MemoryDocumentService(TransformationFactory transformationFactory, NotificationService notificationService){
+        this.transformationFactory = transformationFactory;
         this.notificationService = notificationService;
     }
 
     @Override
     public synchronized DocumentDto create() {
-        MemoryDocument document = new MemoryDocument(this.transformationService, this.notificationService);
+        MemoryDocument document = new MemoryDocument(this.transformationFactory, this.notificationService);
 
         documentStorage.put(id, document);
         DocumentDto documentDto = Mapper.Map(document.getState());
