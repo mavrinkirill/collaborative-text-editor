@@ -7,6 +7,7 @@ import document.Document;
 import document.MemoryDocument;
 import exceptions.ApiValidationException;
 import exceptions.NotFoundException;
+import exceptions.document.DocumentUpdateException;
 import interfaces.DocumentService;
 import interfaces.NotificationService;
 import interfaces.TransformationService;
@@ -114,6 +115,11 @@ public class MemoryDocumentService implements DocumentService {
             throw new NotFoundException("Document not found");
         }
 
-        document.applyCommand(command);
+        try{
+            document.applyCommand(command);
+        }
+        catch (Exception e){
+            throw new DocumentUpdateException(e);
+        }
     }
 }

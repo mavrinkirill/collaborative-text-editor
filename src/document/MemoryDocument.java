@@ -1,11 +1,16 @@
 package document;
 
-import command.*;
-import exceptions.document.DocumentUpdateException;
+import command.CommandBase;
 import exceptions.document.DocumentInvalidVersionException;
-import interfaces.*;
-import java.util.*;
-import java.util.concurrent.locks.*;
+import exceptions.document.DocumentUpdateException;
+import interfaces.NotificationService;
+import interfaces.TransformationService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 
 public class MemoryDocument implements Document {
     private TransformationService transformationService;

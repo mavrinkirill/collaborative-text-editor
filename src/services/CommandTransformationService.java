@@ -1,9 +1,12 @@
 package services;
 
-import command.*;
-import exceptions.OperationalTransformationException;
-import interfaces.TransformationService;
+import command.CommandBase;
+import command.CommandType;
+import command.DeleteCommand;
+import command.InsertCommand;
+import exceptions.NotFoundException;
 import interfaces.CommandTransformation;
+import interfaces.TransformationService;
 
 public class CommandTransformationService implements TransformationService {
     private CommandTransformation commandTransformation;
@@ -42,6 +45,6 @@ public class CommandTransformationService implements TransformationService {
             return commandTransformation.transformation(previousDelete, currentDelete);
         }
 
-        throw new OperationalTransformationException("Unknown command type combination");
+        throw new NotFoundException("Unknown command type combination");
     }
 }

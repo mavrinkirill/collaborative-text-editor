@@ -23,7 +23,7 @@ public abstract class CommandBase {
 
     public abstract String apply(String value) throws Exception;
 
-    protected void ensureValue(String value) throws Exception {
+    protected void ensureValue(String value) throws CommandNullValueException {
         if(value == null){
             throw new CommandNullValueException();
         }
