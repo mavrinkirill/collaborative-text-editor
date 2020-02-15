@@ -1,9 +1,17 @@
 package mapper;
 
-import command.*;
+import command.CommandBase;
+import command.CommandType;
+import command.DeleteCommand;
+import command.InsertCommand;
 import document.DocumentState;
 import exceptions.MapperException;
-import models.dto.*;
+import models.command.CommandDto;
+import models.command.CommandTypeDto;
+import models.command.DeleteCommandDto;
+import models.command.InsertCommandDto;
+import models.document.DocumentDto;
+
 
 public class Mapper {
     public static DocumentDto Map(DocumentState state){

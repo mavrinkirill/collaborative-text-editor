@@ -1,13 +1,15 @@
 package document;
 
 import command.*;
-import exceptions.DocumentInvalidVersionException;
+import exceptions.document.DocumentUpdateException;
+import exceptions.document.DocumentInvalidVersionException;
 import interfaces.*;
 import java.util.*;
 import java.util.concurrent.locks.*;
 
-public class MemoryDocument implements ConcurrentDocument {
+public class MemoryDocument implements Document {
     private TransformationService transformationService;
+    private NotificationService notificationService;
 
     private ReadWriteLock lock = new ReentrantReadWriteLock();
 
@@ -17,8 +19,9 @@ public class MemoryDocument implements ConcurrentDocument {
 
     private String content = "";
 
-    public MemoryDocument(TransformationService transformationService){
+    public MemoryDocument(TransformationService transformationService, NotificationService notificationService){
         this.transformationService = transformationService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class MemoryDocument implements ConcurrentDocument {
     }
 
     @Override
-    public void command(CommandBase command) throws Exception {
+    public void applyCommand(CommandBase command) throws Exception {
         lock.writeLock().lock();
         try {
             if(command.version > version){
@@ -44,12 +47,24 @@ public class MemoryDocument implements ConcurrentDocument {
 
             if(command.version < version){
                 command = transform(command);
-                command.version = version;
             }
 
-            content = command.apply(content);
-            commandStorage.put(version, command);
-            version++;
+            try {
+                content = command.apply(content);
+                commandStorage.put(version, command);
+                version++;
+            }
+            catch (Exception e){
+                throw new DocumentUpdateException(e);
+            }
+
+            try{
+                notificationService.notify(command);
+            }
+            catch (Exception e){
+                //Ignore
+                /*We can just log it and don't send it to top level*/
+            }
         } finally {
             lock.writeLock().unlock();
         }
@@ -77,6 +92,7 @@ public class MemoryDocument implements ConcurrentDocument {
             CommandBase prev = commandStorage.get(i);
             command = transformationService.transform(prev, command);
         }
+        command.version = version;
 
         return command;
     }

@@ -3,7 +3,7 @@ package services;
 import command.*;
 import exceptions.OperationalTransformationException;
 import interfaces.TransformationService;
-import transformation.command.CommandTransformation;
+import interfaces.CommandTransformation;
 
 public class CommandTransformationService implements TransformationService {
     private CommandTransformation commandTransformation;

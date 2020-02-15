@@ -1,4 +1,4 @@
-package models.dto;
+package models.command;
 
 public abstract class CommandBaseDto {
     public long version;

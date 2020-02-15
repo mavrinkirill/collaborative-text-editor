@@ -1,5 +1,5 @@
 package command;
-import exceptions.*;
+import exceptions.command.CommandNullValueException;
 
 public abstract class CommandBase {
     public int position;

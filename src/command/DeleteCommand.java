@@ -1,6 +1,6 @@
 package command;
 
-import exceptions.*;
+import exceptions.command.CommandOutRangeException;
 
 public class DeleteCommand extends CommandBase {
     public int count;
@@ -13,6 +13,10 @@ public class DeleteCommand extends CommandBase {
     @Override
     public String apply(String value) throws Exception {
         ensureValue(value);
+
+        if(position < 0){
+            throw new CommandOutRangeException("Delete position less than 0");
+        }
 
         if(position + count > value.length()){
             throw new CommandOutRangeException("Invalid delete position");

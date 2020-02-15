@@ -1,11 +1,15 @@
-package transformation.command;
+package services;
 
-import command.*;
+import command.DeleteCommand;
+import command.InsertCommand;
+import interfaces.CommandTransformation;
 
 public class InclusionTransformation implements CommandTransformation {
 
     @Override
     public InsertCommand transformation(InsertCommand previous, InsertCommand current) {
+        /*
+        * We need to use some kind of command identificator (I used authorId) for clearly to resolve conflicts in same position*/
         if(current.position < previous.position){
             return current;
         }
@@ -47,6 +51,8 @@ public class InclusionTransformation implements CommandTransformation {
 
     @Override
     public DeleteCommand transformation(DeleteCommand previous, DeleteCommand current) {
+        /*
+        * Its look like line segment intersection problem and we need to find final start and end position*/
         int startPrevious = previous.position;
         int endPrevious = previous.position + previous.count;
         int startCurrent = current.position;

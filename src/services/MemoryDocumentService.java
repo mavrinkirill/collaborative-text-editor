@@ -3,60 +3,56 @@ package services;
 import command.CommandBase;
 import command.DeleteCommand;
 import command.InsertCommand;
-import document.ConcurrentDocument;
+import document.Document;
 import document.MemoryDocument;
+import exceptions.ApiValidationException;
+import exceptions.NotFoundException;
 import interfaces.DocumentService;
+import interfaces.NotificationService;
 import interfaces.TransformationService;
 import mapper.Mapper;
-import models.dto.CommandDto;
-import models.dto.DeleteCommandDto;
-import models.dto.DocumentDto;
-import models.dto.InsertCommandDto;
+import models.command.CommandDto;
+import models.command.DeleteCommandDto;
+import models.command.InsertCommandDto;
+import models.document.DocumentDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class ConcurrentDocumentService implements DocumentService {
+public class MemoryDocumentService implements DocumentService {
     private TransformationService transformationService;
+    private NotificationService notificationService;
 
-    private ReadWriteLock lock = new ReentrantReadWriteLock();
+    private int id = 1;
+    private HashMap<Integer, Document> documentStorage = new HashMap<>();
 
-    private static int id = 1;
-
-    private static HashMap<Integer, ConcurrentDocument> documentStorage = new HashMap<>();
-
-    public ConcurrentDocumentService(TransformationService transformationService){
+    public MemoryDocumentService(TransformationService transformationService, NotificationService notificationService){
         this.transformationService = transformationService;
-
+        this.notificationService = notificationService;
     }
 
     @Override
-    public DocumentDto create() {
-        lock.writeLock().lock();
-        try {
-            MemoryDocument document = new MemoryDocument(this.transformationService);
-            documentStorage.put(id, document);
-            DocumentDto documentDto = Mapper.Map(document.getState());
-            documentDto.Id = id;
-            id++;
-            return documentDto;
-        } finally {
-            lock.writeLock().unlock();
-        }
+    public synchronized DocumentDto create() {
+        MemoryDocument document = new MemoryDocument(this.transformationService, this.notificationService);
+
+        documentStorage.put(id, document);
+        DocumentDto documentDto = Mapper.Map(document.getState());
+        documentDto.Id = id;
+        id++;
+
+        return documentDto;
     }
 
     @Override
-    public DocumentDto get(int documentId) throws Exception {
-        ConcurrentDocument document = documentStorage.get(documentId);
+    public DocumentDto get(int documentId) throws NotFoundException {
+        Document document = documentStorage.get(documentId);
 
         if(document == null){
-            throw new ClassNotFoundException("Document not found");
+            throw new NotFoundException("Document not found");
         }
 
         DocumentDto documentDto = Mapper.Map(document.getState());
-        documentDto.Id = id;
+        documentDto.Id = documentId;
 
         return documentDto;
     }
@@ -64,7 +60,7 @@ public class ConcurrentDocumentService implements DocumentService {
     @Override
     public void applyCommand(int documentId, InsertCommandDto commandDto) throws Exception {
         if(commandDto == null){
-            throw new NullPointerException("Invalid command");
+            throw new ApiValidationException("Invalid command");
         }
 
         CommandBase command = Mapper.Map(commandDto);
@@ -75,7 +71,7 @@ public class ConcurrentDocumentService implements DocumentService {
     @Override
     public void applyCommand(int documentId, DeleteCommandDto commandDto) throws Exception {
         if(commandDto == null){
-            throw new NullPointerException("Invalid command");
+            throw new ApiValidationException("Invalid command");
         }
 
         CommandBase command = Mapper.Map(commandDto);
@@ -85,10 +81,10 @@ public class ConcurrentDocumentService implements DocumentService {
 
     @Override
     public ArrayList<CommandDto> getHistory(int documentId, long version) throws Exception {
-        ConcurrentDocument document = documentStorage.get(documentId);
+        Document document = documentStorage.get(documentId);
 
         if(document == null){
-            throw new ClassNotFoundException("Document not found");
+            throw new NotFoundException("Document not found");
         }
 
         ArrayList<CommandDto> commandDtoList = new ArrayList<>();
@@ -112,12 +108,12 @@ public class ConcurrentDocumentService implements DocumentService {
     }
 
     private void applyCommand(int documentId, CommandBase command) throws Exception{
-        ConcurrentDocument document = documentStorage.get(documentId);
+        Document document = documentStorage.get(documentId);
 
         if(document == null){
-            throw new ClassNotFoundException("Document not found");
+            throw new NotFoundException("Document not found");
         }
 
-        document.command(command);
+        document.applyCommand(command);
     }
 }

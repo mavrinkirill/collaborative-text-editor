@@ -1,6 +1,7 @@
 package command;
 
-import exceptions.*;
+import exceptions.command.CommandNullValueException;
+import exceptions.command.CommandOutRangeException;
 
 public class InsertCommand extends CommandBase {
     public String inserted;

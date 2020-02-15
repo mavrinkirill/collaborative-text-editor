@@ -1,4 +1,7 @@
-package models.dto;
+package models;
+
+import models.command.DeleteCommandDto;
+import models.command.InsertCommandDto;
 
 public class DtoHelper {
     public static InsertCommandDto insertCommandDto(long version, int position, String inserted, int authorId){

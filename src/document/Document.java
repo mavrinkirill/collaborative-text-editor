@@ -1,12 +1,12 @@
 package document;
 
-import command.*;
+import command.CommandBase;
 import java.util.ArrayList;
 
-public interface ConcurrentDocument {
+public interface Document {
     DocumentState getState();
 
-    void command(CommandBase command) throws Exception;
+    void applyCommand(CommandBase command) throws Exception;
 
     ArrayList<CommandBase> getHistory(long version);
 }

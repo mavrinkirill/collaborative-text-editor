@@ -1,11 +1,7 @@
-package exceptions;
+package exceptions.document;
 
 public class DocumentInvalidVersionException extends Exception {
     public DocumentInvalidVersionException() {
         super();
-    }
-
-    public DocumentInvalidVersionException(String message) {
-        super(message);
     }
 }
