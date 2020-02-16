@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class InsertAfterInsertTransformationTest {
 
-    private InsertAfterInsertTransformation transformation;
+    private CommandTransformation transformation;
 
     @BeforeEach
     public void beforeTest() {
@@ -58,10 +58,10 @@ class InsertAfterInsertTransformationTest {
         CommandBase previous = new InsertCommand(0, 0, "a", firstAuthorId);
         CommandBase current = new InsertCommand(0, 0, "a", secondAuthorId);
 
-        CommandBase actual = transformation.transformation(previous, current);
+        InsertCommand actual = (InsertCommand) transformation.transformation(previous, current);
 
         assertEquals(expectedPosition, actual.position);
-        assertThat(actual, instanceOf(InsertCommand.class));
+        assertEquals(1, actual.inserted.length());
     }
 
     @ParameterizedTest
@@ -70,9 +70,9 @@ class InsertAfterInsertTransformationTest {
         CommandBase previous = new InsertCommand(0, firstPosition, "a", firstAuthorId);
         CommandBase current = new InsertCommand(0, secondPosition, "a", secondAuthorId);
 
-        CommandBase actual = transformation.transformation(previous, current);
+        InsertCommand actual = (InsertCommand) transformation.transformation(previous, current);
 
         assertEquals(expectedPosition, actual.position);
-        assertThat(actual, instanceOf(InsertCommand.class));
+        assertEquals(1, actual.inserted.length());
     }
 }

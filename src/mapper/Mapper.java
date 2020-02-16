@@ -6,10 +6,7 @@ import command.DeleteCommand;
 import command.InsertCommand;
 import document.DocumentState;
 import exceptions.MapperException;
-import models.command.CommandDto;
-import models.command.CommandTypeDto;
-import models.command.DeleteCommandDto;
-import models.command.InsertCommandDto;
+import models.command.*;
 import models.document.DocumentDto;
 
 
@@ -41,6 +38,30 @@ public class Mapper {
 
         DeleteCommand command = new DeleteCommand(commandDto.version, commandDto.position, commandDto.count, commandDto.authorId);
         return command;
+    }
+
+    public static CommandBase Map(CommandBaseDto commandDto){
+        if(commandDto == null){
+            return null;
+        }
+
+        if(commandDto.type == null){
+            return null;
+        }
+
+        try {
+            switch (commandDto.type){
+                case INSERT:
+                    return Mapper.Map((InsertCommandDto) commandDto);
+                case DELETE:
+                    return Mapper.Map((DeleteCommandDto) commandDto);
+                default:
+                    return null;
+            }
+        }
+        catch (Exception e){
+            return null;
+        }
     }
 
     public static CommandDto Map(CommandBase command) throws MapperException {

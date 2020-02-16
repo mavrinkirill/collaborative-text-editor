@@ -23,10 +23,7 @@ public class InsertAfterDeleteTransformation implements CommandTransformation {
         DeleteCommand previous = (DeleteCommand) previousCommand;
         InsertCommand current = (InsertCommand) currentCommand;
 
-        if(current.position < previous.position){
-            return current;
-        }
-        else if(current.position == previous.position){
+        if(current.position <= previous.position){
             return current;
         }
         else {

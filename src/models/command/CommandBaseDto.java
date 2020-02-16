@@ -6,4 +6,6 @@ public abstract class CommandBaseDto {
     public int position;
 
     public int authorId;
+
+    public CommandTypeDto type;
 }

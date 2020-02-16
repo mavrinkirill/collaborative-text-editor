@@ -27,7 +27,6 @@ public class Program {
         documentService.applyCommand(1, DtoHelper.insertCommandDto(0 ,0,"1234", 1));
         documentService.applyCommand(1, DtoHelper.insertCommandDto(0 ,0,"5678", 1));
         documentService.applyCommand(1, DtoHelper.deleteCommandDto(1 ,0,2, 1));
-        //documentService.applyCommand(1, DtoHelper.deleteCommandDto(1 ,4,2, 1));
 
         System.out.println(documentService.get(1).content);
     }

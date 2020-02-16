@@ -1,5 +1,6 @@
 package models;
 
+import models.command.CommandTypeDto;
 import models.command.DeleteCommandDto;
 import models.command.InsertCommandDto;
 
@@ -10,6 +11,7 @@ public class DtoHelper {
         command.position = position;
         command.inserted = inserted;
         command.authorId = authorId;
+        command.type = CommandTypeDto.INSERT;
 
         return command;
     }
@@ -20,6 +22,7 @@ public class DtoHelper {
         command.position = position;
         command.count = count;
         command.authorId = authorId;
+        command.type = CommandTypeDto.DELETE;
 
         return command;
     }

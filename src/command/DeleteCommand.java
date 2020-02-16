@@ -2,7 +2,7 @@ package command;
 
 import exceptions.command.CommandOutRangeException;
 
-public class DeleteCommand extends CommandBase {
+public final class DeleteCommand extends CommandBase {
     public int count;
 
     public DeleteCommand(long version, int position, int count, int authorId) {

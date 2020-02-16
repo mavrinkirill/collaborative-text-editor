@@ -3,7 +3,7 @@ package command;
 import exceptions.command.CommandNullValueException;
 import exceptions.command.CommandOutRangeException;
 
-public class InsertCommand extends CommandBase {
+public final class InsertCommand extends CommandBase {
     public String inserted;
 
     public InsertCommand(long version, int position, String inserted, int authorId) {

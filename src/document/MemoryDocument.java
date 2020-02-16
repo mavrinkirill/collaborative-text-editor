@@ -1,7 +1,7 @@
 package document;
 
 import command.CommandBase;
-import exceptions.document.DocumentInvalidVersionException;
+import command.CommandType;
 import exceptions.document.DocumentUpdateException;
 import interfaces.NotificationService;
 import interfaces.TransformationFactory;
@@ -48,7 +48,7 @@ public class MemoryDocument implements Document {
         lock.writeLock().lock();
         try {
             if(command.version > version){
-                throw new DocumentInvalidVersionException();
+                throw new DocumentUpdateException("Document invalid version");
             }
 
             if(command.version < version){
@@ -68,7 +68,7 @@ public class MemoryDocument implements Document {
                 notificationService.notify(command);
             }
             catch (Exception e){
-                //Ignore
+                //Ignore or not. It depends on  requirements
                 /*We can just log it and don't send it to top level*/
             }
         } finally {
@@ -96,16 +96,19 @@ public class MemoryDocument implements Document {
     private CommandBase transformation(CommandBase command) throws Exception {
         for (long i = command.version; i < version; i++){
             CommandBase previousCommand = commandStorage.get(i);
+            CommandType previousCommandType = previousCommand.getType();
+            CommandType currentCommandType = command.getType();
+
             try{
-                CommandTransformation commandTransformation = transformationFactory.getTransformation(previousCommand, command);
+                CommandTransformation commandTransformation = transformationFactory.getTransformation(previousCommandType, currentCommandType);
                 command = commandTransformation.transformation(previousCommand, command);
             }
             catch (Exception e){
                 throw new DocumentUpdateException(e);
             }
         }
-        command.version = version;
 
+        command.version = version;
         return command;
     }
 }

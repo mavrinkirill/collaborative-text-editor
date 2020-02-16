@@ -1,6 +1,5 @@
 package services;
 
-import command.CommandBase;
 import command.CommandType;
 import exceptions.NotFoundException;
 import exceptions.transformation.TransformationDuplicateException;
@@ -30,9 +29,7 @@ public class InclusionTransformationFactory implements TransformationFactory
     }
 
     @Override
-    public CommandTransformation getTransformation(CommandBase previousCommand, CommandBase currentCommand) throws NotFoundException {
-        CommandType previousCommandType = previousCommand.getType();
-        CommandType currentCommandType = currentCommand.getType();
+    public CommandTransformation getTransformation(CommandType previousCommandType, CommandType currentCommandType) throws NotFoundException {
         Pair<CommandType, CommandType> key = new Pair<>(previousCommandType, currentCommandType);
 
         CommandTransformation commandTransformation = transformationStorage.get(key);

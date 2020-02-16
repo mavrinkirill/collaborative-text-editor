@@ -12,9 +12,8 @@ import interfaces.DocumentService;
 import interfaces.NotificationService;
 import interfaces.TransformationFactory;
 import mapper.Mapper;
+import models.command.CommandBaseDto;
 import models.command.CommandDto;
-import models.command.DeleteCommandDto;
-import models.command.InsertCommandDto;
 import models.document.DocumentDto;
 
 import java.util.ArrayList;
@@ -59,23 +58,16 @@ public class MemoryDocumentService implements DocumentService {
     }
 
     @Override
-    public void applyCommand(int documentId, InsertCommandDto commandDto) throws Exception {
+    public void applyCommand(int documentId, CommandBaseDto commandDto) throws Exception {
         if(commandDto == null){
             throw new ApiValidationException("Invalid command");
         }
 
         CommandBase command = Mapper.Map(commandDto);
 
-        applyCommand(documentId, command);
-    }
-
-    @Override
-    public void applyCommand(int documentId, DeleteCommandDto commandDto) throws Exception {
-        if(commandDto == null){
-            throw new ApiValidationException("Invalid command");
+        if(command == null){
+            throw new ApiValidationException("Invalid command map");
         }
-
-        CommandBase command = Mapper.Map(commandDto);
 
         applyCommand(documentId, command);
     }
