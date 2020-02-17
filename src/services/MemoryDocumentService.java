@@ -1,8 +1,6 @@
 package services;
 
 import command.CommandBase;
-import command.DeleteCommand;
-import command.InsertCommand;
 import document.Document;
 import document.MemoryDocument;
 import exceptions.ApiValidationException;
@@ -11,6 +9,7 @@ import exceptions.document.DocumentUpdateException;
 import interfaces.DocumentService;
 import interfaces.NotificationService;
 import interfaces.TransformationFactory;
+import mapper.CommandConverter;
 import mapper.Mapper;
 import models.command.CommandBaseDto;
 import models.command.CommandDto;
@@ -63,7 +62,7 @@ public class MemoryDocumentService implements DocumentService {
             throw new ApiValidationException("Invalid command");
         }
 
-        CommandBase command = Mapper.Map(commandDto);
+        CommandBase command = CommandConverter.Convert(commandDto);
 
         if(command == null){
             throw new ApiValidationException("Invalid command map");
@@ -85,16 +84,13 @@ public class MemoryDocumentService implements DocumentService {
         ArrayList<CommandBase> history = document.getHistory(version);
 
         for (CommandBase entity:history) {
-            CommandDto commandDto = Mapper.Map(entity);
-            switch (entity.getType()){
-                case INSERT:
-                    commandDto.inserted = ((InsertCommand) entity).inserted;
-                    break;
-                case DELETE:
-                    commandDto.count = ((DeleteCommand) entity).count;
-                    break;
+            CommandDto commandDto = CommandConverter.Convert(entity);
+            if(commandDto != null){
+                commandDtoList.add(commandDto);
             }
-            commandDtoList.add(commandDto);
+            else{
+                // Throw exception or log about it. It depends on requirements
+            }
         }
 
         return commandDtoList;
