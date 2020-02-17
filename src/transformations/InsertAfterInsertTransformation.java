@@ -18,7 +18,7 @@ public class InsertAfterInsertTransformation implements CommandTransformation {
     }
 
     @Override
-    public CommandBase transformation(CommandBase previousCommand, CommandBase currentCommand) {
+    public CommandBase transform(CommandBase previousCommand, CommandBase currentCommand) {
         InsertCommand previous = (InsertCommand) previousCommand;
         InsertCommand current = (InsertCommand) currentCommand;
 

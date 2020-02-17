@@ -46,7 +46,7 @@ class InsertAfterInsertTransformationTest {
         CommandBase previous = new InsertCommand(0, 1, "a", 1);
         CommandBase current = new InsertCommand(0, 0, "a", 1);
 
-        CommandBase actual = transformation.transformation(previous, current);
+        CommandBase actual = transformation.transform(previous, current);
 
         assertEquals(0, actual.position);
         assertThat(actual, instanceOf(InsertCommand.class));
@@ -58,7 +58,7 @@ class InsertAfterInsertTransformationTest {
         CommandBase previous = new InsertCommand(0, 0, "a", firstAuthorId);
         CommandBase current = new InsertCommand(0, 0, "a", secondAuthorId);
 
-        InsertCommand actual = (InsertCommand) transformation.transformation(previous, current);
+        InsertCommand actual = (InsertCommand) transformation.transform(previous, current);
 
         assertEquals(expectedPosition, actual.position);
         assertEquals(1, actual.inserted.length());
@@ -70,7 +70,7 @@ class InsertAfterInsertTransformationTest {
         CommandBase previous = new InsertCommand(0, firstPosition, "a", firstAuthorId);
         CommandBase current = new InsertCommand(0, secondPosition, "a", secondAuthorId);
 
-        InsertCommand actual = (InsertCommand) transformation.transformation(previous, current);
+        InsertCommand actual = (InsertCommand) transformation.transform(previous, current);
 
         assertEquals(expectedPosition, actual.position);
         assertEquals(1, actual.inserted.length());

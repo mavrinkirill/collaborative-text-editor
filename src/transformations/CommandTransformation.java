@@ -8,5 +8,5 @@ public interface CommandTransformation {
 
     CommandType getCurrentCommandType();
 
-    CommandBase transformation(CommandBase previousCommand, CommandBase currentCommand);
+    CommandBase transform(CommandBase previousCommand, CommandBase currentCommand);
 }

@@ -32,7 +32,7 @@ public class MemoryDocumentService implements DocumentService {
 
     @Override
     public synchronized DocumentDto create() {
-        MemoryDocument document = new MemoryDocument(this.transformationFactory, this.notificationService);
+        MemoryDocument document = new MemoryDocument(this.transformationFactory);
 
         documentStorage.put(id, document);
         DocumentDto documentDto = Mapper.Map(document.getState());
@@ -69,6 +69,14 @@ public class MemoryDocumentService implements DocumentService {
         }
 
         applyCommand(documentId, command);
+
+        try{
+            notificationService.notify(documentId, command);
+        }
+        catch (Exception e){
+            //Ignore or not. It depends on  requirements
+            /*We can just log it and don't send it to top level*/
+        }
     }
 
     @Override

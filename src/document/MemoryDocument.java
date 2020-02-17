@@ -3,7 +3,6 @@ package document;
 import command.CommandBase;
 import command.CommandType;
 import exceptions.document.DocumentUpdateException;
-import interfaces.NotificationService;
 import interfaces.TransformationFactory;
 import transformations.CommandTransformation;
 
@@ -15,8 +14,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MemoryDocument implements Document {
     private TransformationFactory transformationFactory;
-    private NotificationService notificationService;
-
     private ReadWriteLock lock = new ReentrantReadWriteLock();
 
     private HashMap<Long, CommandBase> commandStorage = new HashMap<>();
@@ -25,9 +22,8 @@ public class MemoryDocument implements Document {
 
     private String content = "";
 
-    public MemoryDocument(TransformationFactory transformationFactory, NotificationService notificationService){
+    public MemoryDocument(TransformationFactory transformationFactory){
         this.transformationFactory = transformationFactory;
-        this.notificationService = notificationService;
     }
 
     @Override
@@ -63,14 +59,6 @@ public class MemoryDocument implements Document {
             catch (Exception e){
                 throw new DocumentUpdateException(e);
             }
-
-            try{
-                notificationService.notify(command);
-            }
-            catch (Exception e){
-                //Ignore or not. It depends on  requirements
-                /*We can just log it and don't send it to top level*/
-            }
         } finally {
             lock.writeLock().unlock();
         }
@@ -101,7 +89,7 @@ public class MemoryDocument implements Document {
 
             try{
                 CommandTransformation commandTransformation = transformationFactory.getTransformation(previousCommandType, currentCommandType);
-                command = commandTransformation.transformation(previousCommand, command);
+                command = commandTransformation.transform(previousCommand, command);
             }
             catch (Exception e){
                 throw new DocumentUpdateException(e);

@@ -147,7 +147,7 @@ class MemoryDocumentServiceTest {
         InsertCommand insertCommand = new InsertCommand(0, 0, "b", 1);
 
         when(transformationFactory.getTransformation(any(CommandType.class), any(CommandType.class))).thenReturn(commandTransformation);
-        when(commandTransformation.transformation(any(CommandBase.class), any(CommandBase.class))).thenReturn(insertCommand);
+        when(commandTransformation.transform(any(CommandBase.class), any(CommandBase.class))).thenReturn(insertCommand);
 
         service.create();
         service.applyCommand(1, insertCommandDtoFirst);

@@ -46,7 +46,7 @@ class InsertAfterDeleteTransformationTest {
         CommandBase previous = new DeleteCommand(0, firstPosition, 1, 1);
         CommandBase current = new InsertCommand(0, secondPosition, "a", 1);
 
-        InsertCommand actual = (InsertCommand) transformation.transformation(previous, current);
+        InsertCommand actual = (InsertCommand) transformation.transform(previous, current);
 
         assertEquals(expectedPosition, actual.position);
         assertEquals(1, actual.inserted.length());
@@ -57,7 +57,7 @@ class InsertAfterDeleteTransformationTest {
         DeleteCommand previous = new DeleteCommand(0, 0, 1, 1);
         InsertCommand current = new InsertCommand(0, 1, "a", 1);
 
-        InsertCommand actual = (InsertCommand) transformation.transformation(previous, current);
+        InsertCommand actual = (InsertCommand) transformation.transform(previous, current);
 
         assertEquals(0, actual.position);
         assertEquals(1, actual.inserted.length());

@@ -44,7 +44,7 @@ class DeleteAfterDeleteTransformationTest {
         CommandBase previous = new DeleteCommand(0, 2, 1, 1);
         CommandBase current = new DeleteCommand(0, 0, 1, 1);
 
-        DeleteCommand actual = (DeleteCommand) transformation.transformation(previous, current);
+        DeleteCommand actual = (DeleteCommand) transformation.transform(previous, current);
 
         assertEquals(0, actual.position);
         assertEquals(1, actual.count);
@@ -56,7 +56,7 @@ class DeleteAfterDeleteTransformationTest {
         CommandBase previous = new DeleteCommand(0, previousPosition, previousCount, 1);
         CommandBase current = new DeleteCommand(0, currentPosition, currentCount, 1);
 
-        DeleteCommand actual = (DeleteCommand) transformation.transformation(previous, current);
+        DeleteCommand actual = (DeleteCommand) transformation.transform(previous, current);
 
         assertEquals(expectedPosition, actual.position);
         assertEquals(expectedCount, actual.count);
