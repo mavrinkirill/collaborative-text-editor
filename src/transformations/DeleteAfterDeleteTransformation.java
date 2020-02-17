@@ -29,7 +29,7 @@ public class DeleteAfterDeleteTransformation implements CommandTransformation {
         int startCurrent = current.position;
         int endCurrent = current.position + current.count;
 
-        if(current.position + current.count < previous.position){
+        if(endCurrent < previous.position){
             return current;
         }
         else if(current.position == previous.position){

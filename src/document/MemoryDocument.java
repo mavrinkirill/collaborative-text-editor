@@ -30,10 +30,7 @@ public class MemoryDocument implements Document {
     public DocumentState getState() {
         lock.readLock().lock();
         try {
-            DocumentState state = new DocumentState();
-            state.version = version;
-            state.content = content;
-            return state;
+            return new DocumentState(version, content);
         } finally {
             lock.readLock().unlock();
         }
